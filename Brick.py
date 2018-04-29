@@ -1,8 +1,7 @@
 import ply.lex as lex
 
 #Initializing tokens
-tokens = (
-    'BLOCKCHAIN',
+tokens = [
     'ID', # only one ID is needed, difference between ids will be specified in parser
     'ASSIGN',
     'LBRACKET',
@@ -10,18 +9,21 @@ tokens = (
     'TYPEASSIGN',
     'TYPE',
     'SEPARATOR',
-    'ADD',
     'LPARENTH',
     'RPARENTH',
     'NUMBER',
-    'PRINT',
     'JSON'
-    )
+    ]
+reserved = {
+    'blockchain' : 'BLOCKCHAIN',
+    'add' : 'ADD',
+    'print' :'PRINT'
+}
 
+tokens += list(reserved.values())
 #Declare action for each token
 
 t_ignore = r' \t'
-t_BLOCKCHAIN = r'blockchain'
 t_ASSIGN = r'='
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
@@ -33,9 +35,10 @@ t_RPARENTH = r'\)'
 
 
 reserved = {
-    'blockchain' : 'BLOCKCHAIN',
-    'add' : 'ADD',
-    'print' :'PRINT'
+    'blockchain': 'BLOCKCHAIN',
+    'add': 'ADD',
+    'print':'PRINT'
+    'mine': 'MINE'
 }
 
 def t_ID(t):
@@ -50,6 +53,7 @@ def t_NUMBER(t):
 
 lexer = lex.lex()
 
+
 import ply.yacc as yacc
 # So I think that we have to store blockchains in a dict
 from Blockchain import Blockchain
@@ -60,12 +64,23 @@ blockchains = {}
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
 
 def p_new_block(p):
-    '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET'''
-    blockchains[p[2]] = Blockchain(p[5])
+    '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
+                    | ADD ID SEPARATOR LPARENTH attributes RPARENTH
+                    | PRINT ID
+                    |MINE ID'''
+    if p[1] == 'blockchain':
+        #TODO: Check if parameters have correct types
+        blockchains[p[2]] = Blockchain(p[5])
+    elif p[1] == 'add':
+        blockchains.get(p[2]).new_data(p[5])
+    elif p[1] == 'print':
+        p[0] = blockchains.get(p[2]).current_chain()
+        print(p[0])
 
 # Here we extract the attributes
 def p_attribute(p):
-    '''attribute : ID TYPEASSIGN ID'''
+    '''attribute : ID TYPEASSIGN ID
+                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
 def p_attributes1(p):
@@ -77,11 +92,13 @@ def p_attributes2(p):
     p[0] = p[1]
     p[0].update(p[3])
 
+
+
 parser = yacc.yacc()
 
 while True:
     try:
-        s = input('calc > ')   # Use raw_input on Python 2
+        s = input('Brick > ')   # Use raw_input on Python
     except EOFError:
         break
     parser.parse(s)
