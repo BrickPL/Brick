@@ -16,8 +16,16 @@ tokens = [
     ]
 reserved = {
     'blockchain' : 'BLOCKCHAIN',
-    'add' : 'ADD',
-    'print' :'PRINT'
+    'add': 'ADD',
+    'print':'PRINT',
+    'String': 'STRING',
+    'int': 'INT',
+    'long': 'LONG',
+    'float': 'FLOAT',
+    'List': 'LIST',
+    'Tuple': 'TUPLE',
+    'dict': 'DICT'
+
 }
 
 tokens += list(reserved.values())
@@ -33,13 +41,6 @@ t_SEPARATOR = r','
 t_LPARENTH = r'\('
 t_RPARENTH = r'\)'
 
-
-reserved = {
-    'blockchain': 'BLOCKCHAIN',
-    'add': 'ADD',
-    'print':'PRINT'
-    'mine': 'MINE'
-}
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
@@ -65,9 +66,8 @@ blockchains = {}
 
 def p_new_block(p):
     '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
-                    | ADD ID SEPARATOR LPARENTH attributes RPARENTH
-                    | PRINT ID
-                    |MINE ID'''
+                    | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
+                    | PRINT ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
         blockchains[p[2]] = Blockchain(p[5])
@@ -77,9 +77,22 @@ def p_new_block(p):
         p[0] = blockchains.get(p[2]).current_chain()
         print(p[0])
 
+
 # Here we extract the attributes
+
+def p_types(p):
+    '''type : STRING
+            | INT
+            | LONG
+            | FLOAT
+            | LIST
+            | TUPLE
+            | DICT'''
+    p[0] = p[1]
+
+
 def p_attribute(p):
-    '''attribute : ID TYPEASSIGN ID
+    '''attribute : ID TYPEASSIGN type
                 | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
@@ -92,7 +105,19 @@ def p_attributes2(p):
     p[0] = p[1]
     p[0].update(p[3])
 
+def p_new_att(p):
+    '''new_att : ID TYPEASSIGN ID
+               | ID TYPEASSIGN NUMBER'''
+    p[0] = {p[1]: p[3]}
 
+def p_new_atts(p):
+    '''new_atts : new_att'''
+    p[0] = p[1]
+
+def p_new_atts(p):
+    '''new_atts : new_atts SEPARATOR new_att'''
+    p[0] = p[1]
+    p[0].update(p[3])
 
 parser = yacc.yacc()
 
