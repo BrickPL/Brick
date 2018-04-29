@@ -1,0 +1,156 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    RPARENTH
+    JSON
+    LPARENTH
+    ADD
+    NUMBER
+    TYPE
+    PRINT
+
+Grammar
+
+Rule 0     S' -> blockchain
+Rule 1     blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
+Rule 2     attribute -> ID TYPEASSIGN ID
+Rule 3     attributes -> attribute
+Rule 4     attributes -> attributes SEPARATOR attribute
+
+Terminals, with rules where they appear
+
+ADD                  : 
+ASSIGN               : 1
+BLOCKCHAIN           : 1
+ID                   : 1 2 2
+JSON                 : 
+LBRACKET             : 1
+LPARENTH             : 
+NUMBER               : 
+PRINT                : 
+RBRACKET             : 1
+RPARENTH             : 
+SEPARATOR            : 4
+TYPE                 : 
+TYPEASSIGN           : 2
+error                : 
+
+Nonterminals, with rules where they appear
+
+attribute            : 3 4
+attributes           : 1 4
+blockchain           : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . blockchain
+    (1) blockchain -> . BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
+
+    BLOCKCHAIN      shift and go to state 1
+
+    blockchain                     shift and go to state 2
+
+state 1
+
+    (1) blockchain -> BLOCKCHAIN . ID ASSIGN LBRACKET attributes RBRACKET
+
+    ID              shift and go to state 3
+
+
+state 2
+
+    (0) S' -> blockchain .
+
+
+
+state 3
+
+    (1) blockchain -> BLOCKCHAIN ID . ASSIGN LBRACKET attributes RBRACKET
+
+    ASSIGN          shift and go to state 4
+
+
+state 4
+
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN . LBRACKET attributes RBRACKET
+
+    LBRACKET        shift and go to state 5
+
+
+state 5
+
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET . attributes RBRACKET
+    (3) attributes -> . attribute
+    (4) attributes -> . attributes SEPARATOR attribute
+    (2) attribute -> . ID TYPEASSIGN ID
+
+    ID              shift and go to state 6
+
+    attribute                      shift and go to state 7
+    attributes                     shift and go to state 8
+
+state 6
+
+    (2) attribute -> ID . TYPEASSIGN ID
+
+    TYPEASSIGN      shift and go to state 9
+
+
+state 7
+
+    (3) attributes -> attribute .
+
+    RBRACKET        reduce using rule 3 (attributes -> attribute .)
+    SEPARATOR       reduce using rule 3 (attributes -> attribute .)
+
+
+state 8
+
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes . RBRACKET
+    (4) attributes -> attributes . SEPARATOR attribute
+
+    RBRACKET        shift and go to state 11
+    SEPARATOR       shift and go to state 10
+
+
+state 9
+
+    (2) attribute -> ID TYPEASSIGN . ID
+
+    ID              shift and go to state 12
+
+
+state 10
+
+    (4) attributes -> attributes SEPARATOR . attribute
+    (2) attribute -> . ID TYPEASSIGN ID
+
+    ID              shift and go to state 6
+
+    attribute                      shift and go to state 13
+
+state 11
+
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET .
+
+    $end            reduce using rule 1 (blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET .)
+
+
+state 12
+
+    (2) attribute -> ID TYPEASSIGN ID .
+
+    RBRACKET        reduce using rule 2 (attribute -> ID TYPEASSIGN ID .)
+    SEPARATOR       reduce using rule 2 (attribute -> ID TYPEASSIGN ID .)
+
+
+state 13
+
+    (4) attributes -> attributes SEPARATOR attribute .
+
+    RBRACKET        reduce using rule 4 (attributes -> attributes SEPARATOR attribute .)
+    SEPARATOR       reduce using rule 4 (attributes -> attributes SEPARATOR attribute .)
+

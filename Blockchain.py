@@ -1,10 +1,9 @@
 class Blockchain(object):
-    def __init__(self, types, param):
+
+    def __init__(self, param):
         self.chain = []
         self.current_data = []
-        self.datatypes = types
         self.parameters = param
-
 
     def new_block(self):
         # Creates a new Block and adds it to the chain
