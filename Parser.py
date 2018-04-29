@@ -15,4 +15,4 @@ def p_new_block(p):
 def p_attributes(p):
     '''attribute: ID TYPEASSIGN ID
                 | attribute SEPARATOR attribute'''
-
+    p[0] = (p[1], p[3]) #returns a tuple that contains the name of the parameter and the type
