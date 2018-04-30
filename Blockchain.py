@@ -1,6 +1,10 @@
 import hashlib
 import json
+from textwrap import dedent
 from time import time
+from uuid import uuid4
+
+from flask import Flask, jsonify, request
 
 class Blockchain(object):
 
@@ -8,6 +12,8 @@ class Blockchain(object):
         self.chain = []
         self.current_data = []
         self.parameters = param
+        self.new_block(previous_hash=1, proof=100)
+
 
     def new_block(self, proof, previous_hash = None):
         # Creates a new Block and adds it to the chain
@@ -33,6 +39,7 @@ class Blockchain(object):
             #TODO: check if the type sent is the same type as parameter
             t[datum] = data[datum]
         self.current_data.append(t)
+        return self.last_block['index'] + 1
 
     def proof_of_work(self, last_proof):
 
@@ -62,3 +69,5 @@ class Blockchain(object):
 
     def current_chain(self):
         return self.current_data
+
+
