@@ -1,4 +1,5 @@
 import ply.lex as lex
+import json
 from flask import Flask, jsonify, request
 from uuid import uuid4
 
@@ -16,7 +17,6 @@ tokens = [
     'LPARENTH',
     'RPARENTH',
     'NUMBER',
-    'JSON'
     ]
 reserved = {
     'blockchain' : 'BLOCKCHAIN',
@@ -30,7 +30,8 @@ reserved = {
     'float': 'FLOAT',
     'List': 'LIST',
     'Tuple': 'TUPLE',
-    'dict': 'DICT'
+    'dict': 'DICT',
+    'export': 'EXPORT'
 
 }
 
@@ -129,7 +130,8 @@ def p_new_block(p):
                     | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
                     | PRINT ID
                     | RUN ID
-                    | MINE ID'''
+                    | MINE ID
+                    | EXPORT ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
         blockchains[p[2]] = Blockchain(p[5])
@@ -146,6 +148,9 @@ def p_new_block(p):
     elif p[1] == 'mine':
         p[0] = blockchains[p[2]].mine()
         print(p[0])
+    elif p[1] == 'export':
+        with open(p[2] + '.json', 'w') as outfile:
+            json.dump(blockchains[p[2]].chain, outfile)
 
 
 # Here we extract the attributes
