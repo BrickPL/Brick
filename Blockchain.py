@@ -68,6 +68,15 @@ class Blockchain(object):
         return self.chain[-1]
 
     def current_chain(self):
-        return self.current_data
+        return self.chain
+
+    def mine(self):
+        last_block = self.chain[-1]
+        last_proof = last_block['proof']
+        proof = self.proof_of_work(last_proof)
+
+        previous_hash = self.hash(last_block)
+        new = self.new_block(proof, previous_hash)
+        return new
 
 
