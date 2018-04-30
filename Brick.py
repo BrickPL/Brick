@@ -1,4 +1,8 @@
 import ply.lex as lex
+from flask import Flask, jsonify, request
+from uuid import uuid4
+
+
 
 #Initializing tokens
 tokens = [
@@ -18,6 +22,8 @@ reserved = {
     'blockchain' : 'BLOCKCHAIN',
     'add': 'ADD',
     'print':'PRINT',
+    'run': 'RUN',
+    'mine': 'MINE',
     'String': 'STRING',
     'int': 'INT',
     'long': 'LONG',
@@ -59,22 +65,86 @@ import ply.yacc as yacc
 # So I think that we have to store blockchains in a dict
 from Blockchain import Blockchain
 
+
+#------------------NODE---------------------------------------------
+
+app = Flask(__name__)
+block = Blockchain(None)
+
+def run(blockchain):
+    global block
+    block = blockchain
+    app.run()
+
+@app.route('/chain', methods=['GET'])
+def full_chain():
+    global block
+    response = {
+        'chain': block.chain,
+        'length': len(block.chain),
+    }
+    return jsonify(response), 200
+
+@app.route('/data/new', methods=['POST'])
+def new_datas():
+    global block
+    values = request.get_json()
+    print(values)
+    required = block.parameters
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+
+    index = block.new_data(values)
+
+    response = {'message': f'Transaction will be added to Block {index}'}
+    return jsonify(response), 201
+
+@app.route('/mine', methods=['GET'])
+def mine(self):
+    global block
+    last_block = block.last_block
+    last_proof = last_block['proof']
+    proof = block.proof_of_work(last_proof)
+
+    previous_hash = block.hash(last_block)
+    new = block.new_block(proof, previous_hash)
+
+    response = {
+        'message': "New Block Forged",
+        'index': new['index'],
+        'transactions': new['transactions'],
+        'proof': new['proof'],
+        'previous_hash': new['previous_hash'],
+    }
+    return jsonify(response), 200
+
+#-------------END-NODE--------------------------------------
+
+
 blockchains = {}
 
-
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
-
 def p_new_block(p):
     '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
                     | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
-                    | PRINT ID'''
+                    | PRINT ID
+                    | RUN ID
+                    | MINE ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
         blockchains[p[2]] = Blockchain(p[5])
+
     elif p[1] == 'add':
         blockchains.get(p[2]).new_data(p[5])
+
     elif p[1] == 'print':
         p[0] = blockchains.get(p[2]).current_chain()
+        print(p[0])
+
+    elif p[1] == 'run':
+        run(blockchains[p[2]])
+    elif p[1] == 'mine':
+        p[0] = blockchains[p[2]].mine()
         print(p[0])
 
 
@@ -110,11 +180,11 @@ def p_new_att(p):
                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
-def p_new_atts(p):
+def p_new_atts1(p):
     '''new_atts : new_att'''
     p[0] = p[1]
 
-def p_new_atts(p):
+def p_new_atts2(p):
     '''new_atts : new_atts SEPARATOR new_att'''
     p[0] = p[1]
     p[0].update(p[3])
@@ -127,4 +197,19 @@ while True:
     except EOFError:
         break
     parser.parse(s)
+
+
+
+
+
+node_identifier = str(uuid4()).replace('-', '')
+
+
+
+
+
+
+
+
+
 
