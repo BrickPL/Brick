@@ -22,6 +22,7 @@ reserved = {
     'blockchain' : 'BLOCKCHAIN',
     'add': 'ADD',
     'print':'PRINT',
+    'printdata' : 'PRINTDATA',
     'run': 'RUN',
     'mine': 'MINE',
     'String': 'STRING',
@@ -32,8 +33,17 @@ reserved = {
     'Tuple': 'TUPLE',
     'dict': 'DICT',
     'export': 'EXPORT'
-
 }
+
+types = {
+    'String': 'STRING',
+    'int': 'INT',
+    'long': 'LONG',
+    'float': 'FLOAT',
+    'List': 'LIST',
+    'Tuple': 'TUPLE'
+}
+
 
 tokens += list(reserved.values())
 #Declare action for each token
@@ -131,16 +141,26 @@ def p_new_block(p):
                     | PRINT ID
                     | RUN ID
                     | MINE ID
-                    | EXPORT ID'''
+                    | EXPORT ID
+                    | PRINTDATA ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
-        blockchains[p[2]] = Blockchain(p[5])
+        if(typeIsValid(p[5])):
+            blockchains[p[2]] = Blockchain(*p[5])
+            print("Blockchain created.")
+        else:
+            print("Blockchain was not created")
+
 
     elif p[1] == 'add':
         blockchains.get(p[2]).new_data(p[5])
 
     elif p[1] == 'print':
         p[0] = blockchains.get(p[2]).current_chain()
+        print(p[0])
+
+    elif p[1] == 'printdata':
+        p[0] = blockchains.get(p[2]).current_chaindata()
         print(p[0])
 
     elif p[1] == 'run':
@@ -193,6 +213,21 @@ def p_new_atts2(p):
     '''new_atts : new_atts SEPARATOR new_att'''
     p[0] = p[1]
     p[0].update(p[3])
+
+#Verifies if each attribute has a valid type.
+# Returns false if at least one is not valid,
+# returns true otherwise.
+def typeIsValid(p):
+    for attribute in p:
+        if not(p[attribute] in types):
+            return False
+        else: continue
+    return True
+
+
+
+
+
 
 parser = yacc.yacc()
 

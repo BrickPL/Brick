@@ -14,6 +14,10 @@ class Blockchain(object):
         self.parameters = param
         self.new_block(previous_hash=1, proof=100)
 
+        for data in param:
+            print(data)
+
+
 
     def new_block(self, proof, previous_hash = None):
         # Creates a new Block and adds it to the chain
@@ -37,6 +41,9 @@ class Blockchain(object):
         for datum in data:
             type = self.parameters.get(datum)
             #TODO: check if the type sent is the same type as parameter
+            print(data[datum])
+            print(t)
+
             t[datum] = data[datum]
         self.current_data.append(t)
         return self.last_block['index'] + 1
@@ -68,6 +75,9 @@ class Blockchain(object):
         return self.chain[-1]
 
     def current_chain(self):
+        return self.chain
+
+    def current_chaindata(self):
         return self.chain
 
     def mine(self):
