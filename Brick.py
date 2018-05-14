@@ -25,7 +25,7 @@ reserved = {
     'printdata' : 'PRINTDATA',
     'run': 'RUN',
     'mine': 'MINE',
-    'String': 'STRING',
+    'str': 'STR', #To be able to validate strings the type has to be written as 'str"
     'int': 'INT',
     'long': 'LONG',
     'float': 'FLOAT',
@@ -36,7 +36,7 @@ reserved = {
 }
 
 types = {
-    'String': 'STRING',
+    'str': 'STR',
     'int': 'INT',
     'long': 'LONG',
     'float': 'FLOAT',
@@ -146,14 +146,23 @@ def p_new_block(p):
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
         if(typeIsValid(p[5])):
-            blockchains[p[2]] = Blockchain(*p[5])
+            blockchains[p[2]] = Blockchain(p[5])
             print("Blockchain created.")
         else:
             print("Blockchain was not created")
 
 
     elif p[1] == 'add':
-        blockchains.get(p[2]).new_data(p[5])
+        data = p[5]
+        for datum in data:
+            print(type(data[datum]).__name__)
+            print(blockchains.get(p[2]).parameters.get(datum))
+            print(type(data[datum]).__name__ == blockchains.get(p[2]).parameters.get(datum))
+            if type(data[datum]).__name__ == blockchains.get(p[2]).parameters.get(datum):
+                #blockchains.get(p[2]).new_data(data)
+                print("Data was added")
+            else:
+                print(datum,":",data[datum]," was not added because the type of the value do not match the type of the attribute.")
 
     elif p[1] == 'print':
         p[0] = blockchains.get(p[2]).current_chain()
@@ -176,7 +185,7 @@ def p_new_block(p):
 # Here we extract the attributes
 
 def p_types(p):
-    '''type : STRING
+    '''type : STR
             | INT
             | LONG
             | FLOAT

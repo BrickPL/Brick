@@ -14,7 +14,7 @@ Rule 4     blockchain -> RUN ID
 Rule 5     blockchain -> MINE ID
 Rule 6     blockchain -> EXPORT ID
 Rule 7     blockchain -> PRINTDATA ID
-Rule 8     type -> STRING
+Rule 8     type -> STR
 Rule 9     type -> INT
 Rule 10    type -> LONG
 Rule 11    type -> FLOAT
@@ -52,7 +52,7 @@ RBRACKET             : 1
 RPARENTH             : 2
 RUN                  : 4
 SEPARATOR            : 2 18 22
-STRING               : 8
+STR                  : 8
 TUPLE                : 13
 TYPE                 : 
 TYPEASSIGN           : 15 16 19 20
@@ -288,7 +288,7 @@ state 26
 
     (15) attribute -> ID TYPEASSIGN . type
     (16) attribute -> ID TYPEASSIGN . NUMBER
-    (8) type -> . STRING
+    (8) type -> . STR
     (9) type -> . INT
     (10) type -> . LONG
     (11) type -> . FLOAT
@@ -297,7 +297,7 @@ state 26
     (14) type -> . DICT
 
     NUMBER          shift and go to state 33
-    STRING          shift and go to state 34
+    STR             shift and go to state 34
     INT             shift and go to state 35
     LONG            shift and go to state 36
     FLOAT           shift and go to state 37
@@ -368,10 +368,10 @@ state 33
 
 state 34
 
-    (8) type -> STRING .
+    (8) type -> STR .
 
-    RBRACKET        reduce using rule 8 (type -> STRING .)
-    SEPARATOR       reduce using rule 8 (type -> STRING .)
+    RBRACKET        reduce using rule 8 (type -> STR .)
+    SEPARATOR       reduce using rule 8 (type -> STR .)
 
 
 state 35
