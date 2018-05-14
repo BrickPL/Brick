@@ -85,7 +85,7 @@ block = Blockchain(None)
 def run(blockchain):
     global block
     block = blockchain
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
@@ -111,7 +111,7 @@ def new_datas():
     return jsonify(response), 201
 
 @app.route('/mine', methods=['GET'])
-def mine(self):
+def mine():
     global block
     last_block = block.last_block
     last_proof = last_block['proof']
@@ -204,8 +204,7 @@ def p_types(p):
 
 
 def p_attribute(p):
-    '''attribute : ID TYPEASSIGN type
-                | ID TYPEASSIGN NUMBER'''
+    '''attribute : ID TYPEASSIGN type'''
     p[0] = {p[1]: p[3]}
 
 
@@ -217,8 +216,12 @@ def p_attributes1(p):
 def p_attributes2(p):
     '''attributes : attributes SEPARATOR attribute'''
     p[0] = p[1]
-    p[0].update(p[3])
+    x = list(p[3].keys())
 
+    if x[0] in p[0].keys():
+        raise ValueError('EXCEPTION BRO u cant have the same paramater name idiot')
+    else:
+        p[0].update(p[3])
 
 def p_new_att(p):
     '''new_att : ID TYPEASSIGN ID
