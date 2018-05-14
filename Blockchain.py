@@ -40,8 +40,6 @@ class Blockchain(object):
             type = self.parameters.get(datum)
             #TODO: check if the type sent is the same type as parameter
             #UPDATE: It was done in the 'add' section of the Brick class
-            print(type)
-
             t[datum] = data[datum]
 
         self.current_data.append(t)

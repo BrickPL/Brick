@@ -145,7 +145,7 @@ def p_new_block(p):
                     | PRINTDATA ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
-        if(typeIsValid(p[5])):
+        if(validate(p[5])):
             blockchains[p[2]] = Blockchain(p[5])
             print("Blockchain created.")
         else:
@@ -154,15 +154,21 @@ def p_new_block(p):
 
     elif p[1] == 'add':
         data = p[5]
+        data_to_add = {}
         for datum in data:
-            print(type(data[datum]).__name__)
-            print(blockchains.get(p[2]).parameters.get(datum))
-            print(type(data[datum]).__name__ == blockchains.get(p[2]).parameters.get(datum))
-            if type(data[datum]).__name__ == blockchains.get(p[2]).parameters.get(datum):
-                #blockchains.get(p[2]).new_data(data)
-                print("Data was added")
+            datum_type = blockchains.get(p[2]).parameters.get(datum)
+            if type(data[datum]).__name__ == datum_type:
+                data_to_add[datum] = data[datum]
+            elif datum_type == None :
+                print("The new data was not added because",datum,"was not previously defined as an attribute.")
             else:
-                print(datum,":",data[datum]," was not added because the type of the value do not match the type of the attribute.")
+                print("The new data was not added because the type of the value do not match the type of", datum,".")
+        if (data_to_add == data):
+            blockchains.get(p[2]).new_data(data)
+            print("Data was added")
+
+
+
 
     elif p[1] == 'print':
         p[0] = blockchains.get(p[2]).current_chain()
@@ -174,9 +180,11 @@ def p_new_block(p):
 
     elif p[1] == 'run':
         run(blockchains[p[2]])
+
     elif p[1] == 'mine':
         p[0] = blockchains[p[2]].mine()
         print(p[0])
+
     elif p[1] == 'export':
         with open(p[2] + '.json', 'w') as outfile:
             json.dump(blockchains[p[2]].chain, outfile)
@@ -200,6 +208,8 @@ def p_attribute(p):
                 | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
+
+
 def p_attributes1(p):
     '''attributes : attribute'''
     p[0] = p[1]
@@ -209,10 +219,12 @@ def p_attributes2(p):
     p[0] = p[1]
     p[0].update(p[3])
 
+
 def p_new_att(p):
     '''new_att : ID TYPEASSIGN ID
                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
+
 
 def p_new_atts1(p):
     '''new_atts : new_att'''
@@ -226,7 +238,7 @@ def p_new_atts2(p):
 #Verifies if each attribute has a valid type.
 # Returns false if at least one is not valid,
 # returns true otherwise.
-def typeIsValid(p):
+def validate(p):
     for attribute in p:
         if not(p[attribute] in types):
             return False
