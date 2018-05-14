@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="79522ac6-191f-45c5-8494-75bfd0be64a4" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/Brick.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Brick.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Blockchain.py" beforeDir="false" afterPath="$PROJECT_DIR$/Blockchain.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Brick.py" beforeDir="false" afterPath="$PROJECT_DIR$/Brick.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/parser.out" beforeDir="false" afterPath="$PROJECT_DIR$/parser.out" afterDir="false" />
     </list>
@@ -25,8 +22,8 @@
       <file leaf-file-name="Blockchain.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Blockchain.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="613">
-              <caret line="41" column="35" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="35" />
+            <state relative-caret-position="326">
+              <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -37,8 +34,8 @@
       <file leaf-file-name="Brick.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Brick.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2092">
-              <caret line="42" column="19" lean-forward="true" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+            <state relative-caret-position="306">
+              <caret line="177" lean-forward="true" selection-start-line="177" selection-end-line="177" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -263,7 +260,21 @@
       <option name="project" value="LOCAL" />
       <updated>1526027139710</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="1. [Add] It wont verify the values' types that are being assign to attributes. Status: Fixed.&#10;2. Now the strings are declared writing 'str' instead of &quot;String&quot; to be able to validate types easily.">
+      <created>1526266261875</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1526266261875</updated>
+    </task>
+    <task id="LOCAL-00012" summary="1. [Add] It verifies that all the attributes are correctly filled before entering the data.">
+      <created>1526271951306</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1526271951306</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -316,7 +327,9 @@
     <MESSAGE value="Started work on running the blockchain" />
     <MESSAGE value="Blockchain can now be ran on a node, blocks can now be mined." />
     <MESSAGE value="1. [Blockchain] When we declared a blockchain it was not checking the type. Status: fixed.&#10;2. [Add] It was possible to add attributes that were not previously defined. Status: On progress.&#10;3. [Add] It wont verify the values' types that are being assign to attributes. Status: On progress." />
-    <option name="LAST_COMMIT_MESSAGE" value="1. [Blockchain] When we declared a blockchain it was not checking the type. Status: fixed.&#10;2. [Add] It was possible to add attributes that were not previously defined. Status: On progress.&#10;3. [Add] It wont verify the values' types that are being assign to attributes. Status: On progress." />
+    <MESSAGE value="1. [Add] It wont verify the values' types that are being assign to attributes. Status: Fixed.&#10;2. Now the strings are declared writing 'str' instead of &quot;String&quot; to be able to validate types easily." />
+    <MESSAGE value="1. [Add] It verifies that all the attributes are correctly filled before entering the data." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. [Add] It verifies that all the attributes are correctly filled before entering the data." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Blockchain.py">
@@ -438,25 +451,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/parsetab.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-241" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Blockchain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="613">
-          <caret line="41" column="35" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="35" />
+        <state relative-caret-position="326">
+          <caret line="43" lean-forward="true" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/parsetab.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-241" />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Brick.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2092">
-          <caret line="42" column="19" lean-forward="true" selection-start-line="42" selection-start-column="19" selection-end-line="42" selection-end-column="19" />
+        <state relative-caret-position="306">
+          <caret line="177" lean-forward="true" selection-start-line="177" selection-end-line="177" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
