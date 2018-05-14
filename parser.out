@@ -25,7 +25,7 @@ Rule 15    attribute -> ID TYPEASSIGN type
 Rule 16    attribute -> ID TYPEASSIGN NUMBER
 Rule 17    attributes -> attribute
 Rule 18    attributes -> attributes SEPARATOR attribute
-Rule 19    new_att -> ID TYPEASSIGN STRING
+Rule 19    new_att -> ID TYPEASSIGN STR
 Rule 20    new_att -> ID TYPEASSIGN NUMBER
 Rule 21    new_atts -> new_att
 Rule 22    new_atts -> new_atts SEPARATOR new_att
@@ -52,8 +52,7 @@ RBRACKET             : 1
 RPARENTH             : 2
 RUN                  : 4
 SEPARATOR            : 2 18 22
-STR                  : 8
-STRING               : 19
+STR                  : 8 19
 TUPLE                : 13
 TYPE                 : 
 TYPEASSIGN           : 15 16 19 20
@@ -227,7 +226,7 @@ state 19
     (2) blockchain -> ADD ID SEPARATOR LPARENTH . new_atts RPARENTH
     (21) new_atts -> . new_att
     (22) new_atts -> . new_atts SEPARATOR new_att
-    (19) new_att -> . ID TYPEASSIGN STRING
+    (19) new_att -> . ID TYPEASSIGN STR
     (20) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
@@ -262,7 +261,7 @@ state 22
 
 state 23
 
-    (19) new_att -> ID . TYPEASSIGN STRING
+    (19) new_att -> ID . TYPEASSIGN STR
     (20) new_att -> ID . TYPEASSIGN NUMBER
 
     TYPEASSIGN      shift and go to state 29
@@ -327,17 +326,17 @@ state 28
 
 state 29
 
-    (19) new_att -> ID TYPEASSIGN . STRING
+    (19) new_att -> ID TYPEASSIGN . STR
     (20) new_att -> ID TYPEASSIGN . NUMBER
 
-    STRING          shift and go to state 42
+    STR             shift and go to state 42
     NUMBER          shift and go to state 43
 
 
 state 30
 
     (22) new_atts -> new_atts SEPARATOR . new_att
-    (19) new_att -> . ID TYPEASSIGN STRING
+    (19) new_att -> . ID TYPEASSIGN STR
     (20) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
@@ -433,10 +432,10 @@ state 41
 
 state 42
 
-    (19) new_att -> ID TYPEASSIGN STRING .
+    (19) new_att -> ID TYPEASSIGN STR .
 
-    RPARENTH        reduce using rule 19 (new_att -> ID TYPEASSIGN STRING .)
-    SEPARATOR       reduce using rule 19 (new_att -> ID TYPEASSIGN STRING .)
+    RPARENTH        reduce using rule 19 (new_att -> ID TYPEASSIGN STR .)
+    SEPARATOR       reduce using rule 19 (new_att -> ID TYPEASSIGN STR .)
 
 
 state 43

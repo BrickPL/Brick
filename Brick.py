@@ -17,7 +17,7 @@ tokens = [
     'LPARENTH',
     'RPARENTH',
     'NUMBER',
-    'STRING'
+    'STR'
     ]
 reserved = {
     'blockchain' : 'BLOCKCHAIN',
@@ -66,9 +66,10 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')
     return t
 
-def t_STRING(t):
+def t_STR(t):
     r'"(?:[^\\]|(?:\\.))*"'
     t.type = reserved.get(t.value, 'STR')
+    t.value = t.value[1:-1]
     return t
 
 def t_NUMBER(t):
@@ -230,7 +231,7 @@ def p_attributes2(p):
 
 
 def p_new_att(p):
-    '''new_att : ID TYPEASSIGN STRING
+    '''new_att : ID TYPEASSIGN STR
                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
