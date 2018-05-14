@@ -17,6 +17,7 @@ tokens = [
     'LPARENTH',
     'RPARENTH',
     'NUMBER',
+    'STR'
     ]
 reserved = {
     'blockchain' : 'BLOCKCHAIN',
@@ -41,7 +42,8 @@ types = {
     'long': 'LONG',
     'float': 'FLOAT',
     'List': 'LIST',
-    'Tuple': 'TUPLE'
+    'Tuple': 'TUPLE',
+    'dict': 'DICT'
 }
 
 
@@ -62,6 +64,12 @@ t_RPARENTH = r'\)'
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     t.type = reserved.get(t.value, 'ID')
+    return t
+
+def t_STR(t):
+    r'"(?:[^\\]|(?:\\.))*"'
+    t.type = reserved.get(t.value, 'STR')
+    t.value = t.value[1:-1]
     return t
 
 def t_NUMBER(t):
@@ -163,9 +171,11 @@ def p_new_block(p):
                 print("The new data was not added because",datum,"was not previously defined as an attribute.")
             else:
                 print("The new data was not added because the type of the value do not match the type of", datum,".")
-        if (data_to_add == data):
+        if (data_to_add == data and data_to_add.__len__() == len(blockchains.get(p[2]).parameters)):
             blockchains.get(p[2]).new_data(data)
             print("Data was added")
+        else:
+            print("Some attributes are missing.")
 
 
 
@@ -224,7 +234,7 @@ def p_attributes2(p):
         p[0].update(p[3])
 
 def p_new_att(p):
-    '''new_att : ID TYPEASSIGN ID
+    '''new_att : ID TYPEASSIGN STR
                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
