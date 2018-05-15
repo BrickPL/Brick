@@ -234,7 +234,7 @@ def p_attributes2(p):
     x = list(p[3].keys())
 
     if x[0] in p[0].keys():
-        raise ValueError('EXCEPTION BRO u cant have the same paramater name idiot')
+        raise ValueError('One or more attributes are repeated.')
     else:
         p[0].update(p[3])
 
