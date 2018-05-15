@@ -15,6 +15,8 @@ class Blockchain(object):
         self.new_block(previous_hash=1, proof=100)
 
 
+
+
     def new_block(self, proof, previous_hash = None):
         # Creates a new Block and adds it to the chain
         block = {
@@ -37,9 +39,14 @@ class Blockchain(object):
         for datum in data:
             type = self.parameters.get(datum)
             #TODO: check if the type sent is the same type as parameter
+            #UPDATE: It was done in the 'add' section of the Brick class
             t[datum] = data[datum]
+
         self.current_data.append(t)
         return self.last_block['index'] + 1
+
+    def type(self):
+        return type
 
     def proof_of_work(self, last_proof):
 
@@ -68,6 +75,9 @@ class Blockchain(object):
         return self.chain[-1]
 
     def current_chain(self):
+        return self.chain
+
+    def current_chaindata(self):
         return self.chain
 
     def mine(self):
