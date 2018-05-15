@@ -34,8 +34,8 @@
       <file leaf-file-name="Brick.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Brick.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="177" lean-forward="true" selection-start-line="177" selection-end-line="177" />
+            <state relative-caret-position="264">
+              <caret line="177" column="32" selection-start-line="177" selection-start-column="32" selection-end-line="177" selection-end-column="32" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -274,7 +274,21 @@
       <option name="project" value="LOCAL" />
       <updated>1526271951306</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="1. [Add] It verifies that there is no attributes missing when entering the data.">
+      <created>1526284302360</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1526284302361</updated>
+    </task>
+    <task id="LOCAL-00014" summary="1. It now reads strings when the string is between double quotes.">
+      <created>1526285054200</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1526285054200</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -329,7 +343,9 @@
     <MESSAGE value="1. [Blockchain] When we declared a blockchain it was not checking the type. Status: fixed.&#10;2. [Add] It was possible to add attributes that were not previously defined. Status: On progress.&#10;3. [Add] It wont verify the values' types that are being assign to attributes. Status: On progress." />
     <MESSAGE value="1. [Add] It wont verify the values' types that are being assign to attributes. Status: Fixed.&#10;2. Now the strings are declared writing 'str' instead of &quot;String&quot; to be able to validate types easily." />
     <MESSAGE value="1. [Add] It verifies that all the attributes are correctly filled before entering the data." />
-    <option name="LAST_COMMIT_MESSAGE" value="1. [Add] It verifies that all the attributes are correctly filled before entering the data." />
+    <MESSAGE value="1. [Add] It verifies that there is no attributes missing when entering the data." />
+    <MESSAGE value="1. It now reads strings when the string is between double quotes." />
+    <option name="LAST_COMMIT_MESSAGE" value="1. It now reads strings when the string is between double quotes." />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/Blockchain.py">
@@ -468,8 +484,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Brick.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="177" lean-forward="true" selection-start-line="177" selection-end-line="177" />
+        <state relative-caret-position="264">
+          <caret line="177" column="32" selection-start-line="177" selection-start-column="32" selection-end-line="177" selection-end-column="32" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>

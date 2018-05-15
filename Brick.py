@@ -55,7 +55,6 @@ t_ASSIGN = r'='
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_TYPEASSIGN = r':'
-#figure out what to do with TYPE, should be a string. Possible just use ID
 t_SEPARATOR = r','
 t_LPARENTH = r'\('
 t_RPARENTH = r'\)'
@@ -70,6 +69,11 @@ def t_STR(t):
     r'"(?:[^\\]|(?:\\.))*"'
     t.type = reserved.get(t.value, 'STR')
     t.value = t.value[1:-1]
+    return t
+
+def t_DICT(t):
+    r'{([a-zA-Z_][a-zA-Z0-9_]*:(?:[^\\]|(?:\\.))*(\,?))*}'
+    t.type = reserved.get(t.value, 'DICT')
     return t
 
 def t_NUMBER(t):
@@ -144,8 +148,8 @@ blockchains = {}
 
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
 def p_new_block(p):
-    '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
-                    | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
+    '''blockchain : BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
+                    | ADD ID ASSIGN LPARENTH new_atts RPARENTH
                     | PRINT ID
                     | RUN ID
                     | MINE ID
@@ -171,6 +175,7 @@ def p_new_block(p):
                 print("The new data was not added because",datum,"was not previously defined as an attribute.")
             else:
                 print("The new data was not added because the type of the value do not match the type of", datum,".")
+
         if (data_to_add == data and data_to_add.__len__() == len(blockchains.get(p[2]).parameters)):
             blockchains.get(p[2]).new_data(data)
             print("Data was added")
@@ -232,7 +237,8 @@ def p_attributes2(p):
 
 def p_new_att(p):
     '''new_att : ID TYPEASSIGN STR
-               | ID TYPEASSIGN NUMBER'''
+               | ID TYPEASSIGN NUMBER
+               | ID TYPEASSIGN DICT'''
     p[0] = {p[1]: p[3]}
 
 
