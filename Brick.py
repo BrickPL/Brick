@@ -153,12 +153,16 @@ def p_new_block(p):
                     | PRINTDATA ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
-        if(validate(p[5])):
-            blockchains[p[2]] = Blockchain(p[5])
-            print("Blockchain created.")
-        else:
-            print("Blockchain was not created")
+        try:
+            if(validate(p[5])):
 
+                blockchains[p[2]] = Blockchain(p[5])
+                print("Blockchain created.")
+
+            else:
+                print("Blockchain was not created")
+        except ValueError:
+            print("Can't have same parameter name")
 
     elif p[1] == 'add':
         data = p[5]
@@ -230,6 +234,8 @@ def p_attributes2(p):
 
     if x[0] in p[0].keys():
         raise ValueError('EXCEPTION BRO u cant have the same paramater name idiot')
+
+           
     else:
         p[0].update(p[3])
 
@@ -270,7 +276,10 @@ while True:
         s = input('Brick > ')   # Use raw_input on Python
     except EOFError:
         break
-    parser.parse(s)
+    try:
+        parser.parse(s)
+    except ValueError:
+        print("Can't have same parameter name")
 
 
 
