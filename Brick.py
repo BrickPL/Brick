@@ -1,5 +1,6 @@
 import ply.lex as lex
 import json
+import requests
 from flask import Flask, jsonify, request
 from uuid import uuid4
 
@@ -88,7 +89,7 @@ from Blockchain import Blockchain
 #------------------NODE---------------------------------------------
 
 app = Flask(__name__)
-block = Blockchain(None)
+
 
 def run(blockchain):
     global block
@@ -131,11 +132,76 @@ def mine():
     response = {
         'message': "New Block Forged",
         'index': new['index'],
-        'transactions': new['transactions'],
+        'transactions': new['data'],
         'proof': new['proof'],
         'previous_hash': new['previous_hash'],
     }
     return jsonify(response), 200
+
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    global block
+    values = request.get_json()
+
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        block.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(block.nodes),
+    }
+    return jsonify(response), 201
+
+
+@app.route('/nodes/resolve', methods=['GET'])
+def consensus():
+    global block
+    replaced = resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'Our chain was replaced',
+            'new_chain': block.chain
+        }
+    else:
+        response = {
+            'message': 'Our chain is authoritative',
+            'chain': block.chain
+        }
+
+    return jsonify(response), 200
+
+def resolve_conflicts(self):
+    global block
+    neighbours = block.nodes
+    new_chain = None
+
+        # We're only looking for chains longer than ours
+    max_length = len(block.chain)
+
+        # Grab and verify the chains from all the nodes in our network
+    for node in neighbours:
+        response = requests.get(f'http://{node}/chain')
+
+        if response.status_code == 200:
+            length = response.json()['length']
+            chain = response.json()['chain']
+
+                # Check if the length is longer and the chain is valid
+            if length > max_length and block.valid_chain(chain):
+                max_length = length
+                new_chain = chain
+
+        # Replace our chain if we discovered a new, valid chain longer than ours
+    if new_chain:
+        block.chain = new_chain
+        return True
+
+    return False
 
 #-------------END-NODE--------------------------------------
 
