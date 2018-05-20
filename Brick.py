@@ -1,5 +1,6 @@
 import ply.lex as lex
 import json
+import requests
 from flask import Flask, jsonify, request
 from uuid import uuid4
 
@@ -55,6 +56,7 @@ t_ASSIGN = r'='
 t_LBRACKET = r'\{'
 t_RBRACKET = r'\}'
 t_TYPEASSIGN = r':'
+#figure out what to do with TYPE, should be a string. Possible just use ID
 t_SEPARATOR = r','
 t_LPARENTH = r'\('
 t_RPARENTH = r'\)'
@@ -69,11 +71,6 @@ def t_STR(t):
     r'"(?:[^\\]|(?:\\.))*"'
     t.type = reserved.get(t.value, 'STR')
     t.value = t.value[1:-1]
-    return t
-
-def t_DICT(t):
-    r'{([a-zA-Z_][a-zA-Z0-9_]*:(?:[^\\]|(?:\\.))*(\,?))*}'
-    t.type = reserved.get(t.value, 'DICT')
     return t
 
 def t_NUMBER(t):
@@ -92,7 +89,7 @@ from Blockchain import Blockchain
 #------------------NODE---------------------------------------------
 
 app = Flask(__name__)
-block = Blockchain(None)
+
 
 def run(blockchain):
     global block
@@ -135,11 +132,76 @@ def mine():
     response = {
         'message': "New Block Forged",
         'index': new['index'],
-        'transactions': new['transactions'],
+        'transactions': new['data'],
         'proof': new['proof'],
         'previous_hash': new['previous_hash'],
     }
     return jsonify(response), 200
+
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    global block
+    values = request.get_json()
+
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        block.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(block.nodes),
+    }
+    return jsonify(response), 201
+
+
+@app.route('/nodes/resolve', methods=['GET'])
+def consensus():
+    global block
+    replaced = resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'Our chain was replaced',
+            'new_chain': block.chain
+        }
+    else:
+        response = {
+            'message': 'Our chain is authoritative',
+            'chain': block.chain
+        }
+
+    return jsonify(response), 200
+
+def resolve_conflicts(self):
+    global block
+    neighbours = block.nodes
+    new_chain = None
+
+        # We're only looking for chains longer than ours
+    max_length = len(block.chain)
+
+        # Grab and verify the chains from all the nodes in our network
+    for node in neighbours:
+        response = requests.get(f'http://{node}/chain')
+
+        if response.status_code == 200:
+            length = response.json()['length']
+            chain = response.json()['chain']
+
+                # Check if the length is longer and the chain is valid
+            if length > max_length and block.valid_chain(chain):
+                max_length = length
+                new_chain = chain
+
+        # Replace our chain if we discovered a new, valid chain longer than ours
+    if new_chain:
+        block.chain = new_chain
+        return True
+
+    return False
 
 #-------------END-NODE--------------------------------------
 
@@ -148,8 +210,8 @@ blockchains = {}
 
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
 def p_new_block(p):
-    '''blockchain : BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
-                    | ADD ID ASSIGN LPARENTH new_atts RPARENTH
+    '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
+                    | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
                     | PRINT ID
                     | RUN ID
                     | MINE ID
@@ -157,12 +219,16 @@ def p_new_block(p):
                     | PRINTDATA ID'''
     if p[1] == 'blockchain':
         #TODO: Check if parameters have correct types
-        if(validate(p[5])):
-            blockchains[p[2]] = Blockchain(p[5])
-            print("Blockchain created.")
-        else:
-            print("Blockchain was not created")
+        try:
+            if(validate(p[5])):
 
+                blockchains[p[2]] = Blockchain(p[5])
+                print("Blockchain created.")
+
+            else:
+                print("Blockchain was not created")
+        except ValueError:
+            print("Can't have same parameter name")
 
     elif p[1] == 'add':
         data = p[5]
@@ -175,7 +241,6 @@ def p_new_block(p):
                 print("The new data was not added because",datum,"was not previously defined as an attribute.")
             else:
                 print("The new data was not added because the type of the value do not match the type of", datum,".")
-
         if (data_to_add == data and data_to_add.__len__() == len(blockchains.get(p[2]).parameters)):
             blockchains.get(p[2]).new_data(data)
             print("Data was added")
@@ -234,14 +299,15 @@ def p_attributes2(p):
     x = list(p[3].keys())
 
     if x[0] in p[0].keys():
-        raise ValueError('One or more attributes are repeated.')
+        raise ValueError('EXCEPTION BRO u cant have the same paramater name idiot')
+
+           
     else:
         p[0].update(p[3])
 
 def p_new_att(p):
     '''new_att : ID TYPEASSIGN STR
-               | ID TYPEASSIGN NUMBER
-               | ID TYPEASSIGN DICT'''
+               | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
 
@@ -276,7 +342,10 @@ while True:
         s = input('Brick > ')   # Use raw_input on Python
     except EOFError:
         break
-    parser.parse(s)
+    try:
+        parser.parse(s)
+    except ValueError:
+        print("Can't have same parameter name")
 
 
 
