@@ -94,7 +94,7 @@ app = Flask(__name__)
 def run(blockchain):
     global block
     block = blockchain
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='192.168.0.106', port=5000)
 
 @app.route('/chain', methods=['GET'])
 def full_chain():
@@ -210,8 +210,8 @@ blockchains = {}
 
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
 def p_new_block(p):
-    '''blockchain : BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
-                    | ADD ID SEPARATOR LPARENTH new_atts RPARENTH
+    '''blockchain : BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
+                    | ADD ID LPARENTH new_atts RPARENTH
                     | PRINT ID
                     | RUN ID
                     | MINE ID
