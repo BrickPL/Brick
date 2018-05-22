@@ -68,10 +68,11 @@ def t_ID(t):
     return t
 
 def t_STR(t):
-    r'"(?:[^\\]|(?:\\.))*"'
+    r'("[^"]*")|(\'[^\']*\')'
     t.type = reserved.get(t.value, 'STR')
     t.value = t.value[1:-1]
     return t
+
 
 def t_NUMBER(t):
     r'\d+'
@@ -211,7 +212,7 @@ blockchains = {}
 # Here we create a new blockchain, extracting the attributes and storing the blockchain in the dict
 def p_new_block(p):
     '''blockchain : BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
-                    | ADD ID LPARENTH new_atts RPARENTH
+                    | ADD ID ASSIGN LPARENTH new_atts RPARENTH
                     | PRINT ID
                     | RUN ID
                     | MINE ID
@@ -234,6 +235,7 @@ def p_new_block(p):
         data = p[5]
         data_to_add = {}
         for datum in data:
+            print(data[datum])
             datum_type = blockchains.get(p[2]).parameters.get(datum)
             if type(data[datum]).__name__ == datum_type:
                 data_to_add[datum] = data[datum]
@@ -245,7 +247,8 @@ def p_new_block(p):
             blockchains.get(p[2]).new_data(data)
             print("Data was added")
         else:
-            print("Some attributes are missing.")
+            print("Some attributes are missing .")
+
 
 
 
@@ -319,7 +322,6 @@ def p_new_atts2(p):
     '''new_atts : new_atts SEPARATOR new_att'''
     p[0] = p[1]
     p[0].update(p[3])
-
 #Verifies if each attribute has a valid type.
 # Returns false if at least one is not valid,
 # returns true otherwise.
