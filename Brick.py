@@ -10,15 +10,12 @@ from uuid import uuid4
 tokens = [
     'ID', # only one ID is needed, difference between ids will be specified in parser
     'ASSIGN',
-    'LBRACKET',
-    'RBRACKET',
     'TYPEASSIGN',
-    'TYPE',
     'SEPARATOR',
     'LPARENTH',
     'RPARENTH',
     'NUMBER',
-    'STR'
+    'STRING'
     ]
 reserved = {
     'blockchain' : 'BLOCKCHAIN',
@@ -51,10 +48,8 @@ types = {
 tokens += list(reserved.values())
 #Declare action for each token
 
-t_ignore = r' \t'
+t_ignore =  ' \t'
 t_ASSIGN = r'='
-t_LBRACKET = r'\{'
-t_RBRACKET = r'\}'
 t_TYPEASSIGN = r':'
 #figure out what to do with TYPE, should be a string. Possible just use ID
 t_SEPARATOR = r','
@@ -67,9 +62,8 @@ def t_ID(t):
     t.type = reserved.get(t.value, 'ID')
     return t
 
-def t_STR(t):
+def t_STRING(t):
     r'("[^"]*")|(\'[^\']*\')'
-    t.type = reserved.get(t.value, 'STR')
     t.value = t.value[1:-1]
     return t
 
@@ -78,6 +72,9 @@ def t_NUMBER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
+def t_error(t):
+    print()
 
 lexer = lex.lex()
 
@@ -95,14 +92,23 @@ app = Flask(__name__)
 def run(blockchain):
     global block
     block = blockchain
-    app.run(host='192.168.0.106', port=5000)
+    app.run(host='10.24.8.52', port=5000)
 
-@app.route('/chain', methods=['GET'])
+@app.route('/', methods=['GET'])
 def full_chain():
     global block
     response = {
         'chain': block.chain,
         'length': len(block.chain),
+    }
+    return jsonify(response), 200
+
+@app.route('/current', methods=['GET'])
+def full_data():
+    global block
+    response = {
+        'data': block.current_data,
+        'length': len(block.current_data),
     }
     return jsonify(response), 200
 
@@ -235,7 +241,6 @@ def p_new_block(p):
         data = p[5]
         data_to_add = {}
         for datum in data:
-            print(data[datum])
             datum_type = blockchains.get(p[2]).parameters.get(datum)
             if type(data[datum]).__name__ == datum_type:
                 data_to_add[datum] = data[datum]
@@ -309,7 +314,7 @@ def p_attributes2(p):
         p[0].update(p[3])
 
 def p_new_att(p):
-    '''new_att : ID TYPEASSIGN STR
+    '''new_att : ID TYPEASSIGN STRING
                | ID TYPEASSIGN NUMBER'''
     p[0] = {p[1]: p[3]}
 
@@ -322,6 +327,7 @@ def p_new_atts2(p):
     '''new_atts : new_atts SEPARATOR new_att'''
     p[0] = p[1]
     p[0].update(p[3])
+
 #Verifies if each attribute has a valid type.
 # Returns false if at least one is not valid,
 # returns true otherwise.
@@ -332,6 +338,8 @@ def validate(p):
         else: continue
     return True
 
+def p_error(p):
+    print("Error.")
 
 
 

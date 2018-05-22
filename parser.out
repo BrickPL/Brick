@@ -1,11 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    LBRACKET
-    RBRACKET
-    TYPE
-
 Grammar
 
 Rule 0     S' -> blockchain
@@ -26,7 +20,7 @@ Rule 14    type -> DICT
 Rule 15    attribute -> ID TYPEASSIGN type
 Rule 16    attributes -> attribute
 Rule 17    attributes -> attributes SEPARATOR attribute
-Rule 18    new_att -> ID TYPEASSIGN STR
+Rule 18    new_att -> ID TYPEASSIGN STRING
 Rule 19    new_att -> ID TYPEASSIGN NUMBER
 Rule 20    new_atts -> new_att
 Rule 21    new_atts -> new_atts SEPARATOR new_att
@@ -41,7 +35,6 @@ EXPORT               : 6
 FLOAT                : 11
 ID                   : 1 2 3 4 5 6 7 15 18 19
 INT                  : 9
-LBRACKET             : 
 LIST                 : 12
 LONG                 : 10
 LPARENTH             : 1 2
@@ -49,13 +42,12 @@ MINE                 : 5
 NUMBER               : 19
 PRINT                : 3
 PRINTDATA            : 7
-RBRACKET             : 
 RPARENTH             : 1 2
 RUN                  : 4
 SEPARATOR            : 17 21
-STR                  : 8 18
+STR                  : 8
+STRING               : 18
 TUPLE                : 13
-TYPE                 : 
 TYPEASSIGN           : 15 18 19
 error                : 
 
@@ -226,7 +218,7 @@ state 19
     (2) blockchain -> ADD ID ASSIGN LPARENTH . new_atts RPARENTH
     (20) new_atts -> . new_att
     (21) new_atts -> . new_atts SEPARATOR new_att
-    (18) new_att -> . ID TYPEASSIGN STR
+    (18) new_att -> . ID TYPEASSIGN STRING
     (19) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
@@ -260,7 +252,7 @@ state 22
 
 state 23
 
-    (18) new_att -> ID . TYPEASSIGN STR
+    (18) new_att -> ID . TYPEASSIGN STRING
     (19) new_att -> ID . TYPEASSIGN NUMBER
 
     TYPEASSIGN      shift and go to state 29
@@ -322,10 +314,10 @@ state 28
 
 state 29
 
-    (18) new_att -> ID TYPEASSIGN . STR
+    (18) new_att -> ID TYPEASSIGN . STRING
     (19) new_att -> ID TYPEASSIGN . NUMBER
 
-    STR             shift and go to state 41
+    STRING          shift and go to state 41
     NUMBER          shift and go to state 42
 
 
@@ -339,7 +331,7 @@ state 30
 state 31
 
     (21) new_atts -> new_atts SEPARATOR . new_att
-    (18) new_att -> . ID TYPEASSIGN STR
+    (18) new_att -> . ID TYPEASSIGN STRING
     (19) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
@@ -420,10 +412,10 @@ state 40
 
 state 41
 
-    (18) new_att -> ID TYPEASSIGN STR .
+    (18) new_att -> ID TYPEASSIGN STRING .
 
-    RPARENTH        reduce using rule 18 (new_att -> ID TYPEASSIGN STR .)
-    SEPARATOR       reduce using rule 18 (new_att -> ID TYPEASSIGN STR .)
+    RPARENTH        reduce using rule 18 (new_att -> ID TYPEASSIGN STRING .)
+    SEPARATOR       reduce using rule 18 (new_att -> ID TYPEASSIGN STRING .)
 
 
 state 42
