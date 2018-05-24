@@ -267,11 +267,19 @@ def p_new_block(p):
         print(p[0])
 
     elif p[1] == 'run':
-        run(blockchains[p[2]])
+        if p[2] in blockchains:
+            run(blockchains[p[2]])
+        else:
+            print("Blockchain does not exist.")
+
 
     elif p[1] == 'mine':
-        p[0] = blockchains[p[2]].mine()
-        print(p[0])
+       if p[2] in blockchains:
+           if not blockchains[p[2]].current_data:
+               print("Can't mine empty block.")
+           else:
+                p[0] = blockchains[p[2]].mine()
+                print(p[0])
 
     elif p[1] == 'export':
         with open(p[2] + '.json', 'w') as outfile:
@@ -339,7 +347,7 @@ def validate(p):
     return True
 
 def p_error(p):
-    print("Error.")
+    print("Syntax error.")
 
 
 
@@ -356,6 +364,8 @@ while True:
         parser.parse(s)
     except ValueError:
         print("Can't have same parameter name")
+    except AttributeError:
+        print("Blockchain does not exist")
 
 
 
