@@ -17,9 +17,6 @@ class Blockchain(object):
         self.nodes = set()
 
 
-
-
-
     def new_block(self, proof, previous_hash = None):
         # Creates a new Block and adds it to the chain
         block = {

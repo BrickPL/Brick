@@ -1,14 +1,10 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    TYPE
-
 Grammar
 
 Rule 0     S' -> blockchain
-Rule 1     blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
-Rule 2     blockchain -> ADD ID SEPARATOR LPARENTH new_atts RPARENTH
+Rule 1     blockchain -> BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
+Rule 2     blockchain -> ADD ID ASSIGN LPARENTH new_atts RPARENTH
 Rule 3     blockchain -> PRINT ID
 Rule 4     blockchain -> RUN ID
 Rule 5     blockchain -> MINE ID
@@ -24,7 +20,7 @@ Rule 14    type -> DICT
 Rule 15    attribute -> ID TYPEASSIGN type
 Rule 16    attributes -> attribute
 Rule 17    attributes -> attributes SEPARATOR attribute
-Rule 18    new_att -> ID TYPEASSIGN STR
+Rule 18    new_att -> ID TYPEASSIGN STRING
 Rule 19    new_att -> ID TYPEASSIGN NUMBER
 Rule 20    new_atts -> new_att
 Rule 21    new_atts -> new_atts SEPARATOR new_att
@@ -32,28 +28,26 @@ Rule 21    new_atts -> new_atts SEPARATOR new_att
 Terminals, with rules where they appear
 
 ADD                  : 2
-ASSIGN               : 1
+ASSIGN               : 1 2
 BLOCKCHAIN           : 1
 DICT                 : 14
 EXPORT               : 6
 FLOAT                : 11
 ID                   : 1 2 3 4 5 6 7 15 18 19
 INT                  : 9
-LBRACKET             : 1
 LIST                 : 12
 LONG                 : 10
-LPARENTH             : 2
+LPARENTH             : 1 2
 MINE                 : 5
 NUMBER               : 19
 PRINT                : 3
 PRINTDATA            : 7
-RBRACKET             : 1
-RPARENTH             : 2
+RPARENTH             : 1 2
 RUN                  : 4
-SEPARATOR            : 2 17 21
-STR                  : 8 18
+SEPARATOR            : 17 21
+STR                  : 8
+STRING               : 18
 TUPLE                : 13
-TYPE                 : 
 TYPEASSIGN           : 15 18 19
 error                : 
 
@@ -71,8 +65,8 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . blockchain
-    (1) blockchain -> . BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET
-    (2) blockchain -> . ADD ID SEPARATOR LPARENTH new_atts RPARENTH
+    (1) blockchain -> . BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH
+    (2) blockchain -> . ADD ID ASSIGN LPARENTH new_atts RPARENTH
     (3) blockchain -> . PRINT ID
     (4) blockchain -> . RUN ID
     (5) blockchain -> . MINE ID
@@ -97,14 +91,14 @@ state 1
 
 state 2
 
-    (1) blockchain -> BLOCKCHAIN . ID ASSIGN LBRACKET attributes RBRACKET
+    (1) blockchain -> BLOCKCHAIN . ID ASSIGN LPARENTH attributes RPARENTH
 
     ID              shift and go to state 9
 
 
 state 3
 
-    (2) blockchain -> ADD . ID SEPARATOR LPARENTH new_atts RPARENTH
+    (2) blockchain -> ADD . ID ASSIGN LPARENTH new_atts RPARENTH
 
     ID              shift and go to state 10
 
@@ -146,16 +140,16 @@ state 8
 
 state 9
 
-    (1) blockchain -> BLOCKCHAIN ID . ASSIGN LBRACKET attributes RBRACKET
+    (1) blockchain -> BLOCKCHAIN ID . ASSIGN LPARENTH attributes RPARENTH
 
     ASSIGN          shift and go to state 16
 
 
 state 10
 
-    (2) blockchain -> ADD ID . SEPARATOR LPARENTH new_atts RPARENTH
+    (2) blockchain -> ADD ID . ASSIGN LPARENTH new_atts RPARENTH
 
-    SEPARATOR       shift and go to state 17
+    ASSIGN          shift and go to state 17
 
 
 state 11
@@ -195,21 +189,21 @@ state 15
 
 state 16
 
-    (1) blockchain -> BLOCKCHAIN ID ASSIGN . LBRACKET attributes RBRACKET
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN . LPARENTH attributes RPARENTH
 
-    LBRACKET        shift and go to state 18
+    LPARENTH        shift and go to state 18
 
 
 state 17
 
-    (2) blockchain -> ADD ID SEPARATOR . LPARENTH new_atts RPARENTH
+    (2) blockchain -> ADD ID ASSIGN . LPARENTH new_atts RPARENTH
 
     LPARENTH        shift and go to state 19
 
 
 state 18
 
-    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET . attributes RBRACKET
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LPARENTH . attributes RPARENTH
     (16) attributes -> . attribute
     (17) attributes -> . attributes SEPARATOR attribute
     (15) attribute -> . ID TYPEASSIGN type
@@ -221,10 +215,10 @@ state 18
 
 state 19
 
-    (2) blockchain -> ADD ID SEPARATOR LPARENTH . new_atts RPARENTH
+    (2) blockchain -> ADD ID ASSIGN LPARENTH . new_atts RPARENTH
     (20) new_atts -> . new_att
     (21) new_atts -> . new_atts SEPARATOR new_att
-    (18) new_att -> . ID TYPEASSIGN STR
+    (18) new_att -> . ID TYPEASSIGN STRING
     (19) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
@@ -241,10 +235,10 @@ state 20
 
 state 21
 
-    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes . RBRACKET
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LPARENTH attributes . RPARENTH
     (17) attributes -> attributes . SEPARATOR attribute
 
-    RBRACKET        shift and go to state 27
+    RPARENTH        shift and go to state 27
     SEPARATOR       shift and go to state 28
 
 
@@ -252,13 +246,13 @@ state 22
 
     (16) attributes -> attribute .
 
-    RBRACKET        reduce using rule 16 (attributes -> attribute .)
+    RPARENTH        reduce using rule 16 (attributes -> attribute .)
     SEPARATOR       reduce using rule 16 (attributes -> attribute .)
 
 
 state 23
 
-    (18) new_att -> ID . TYPEASSIGN STR
+    (18) new_att -> ID . TYPEASSIGN STRING
     (19) new_att -> ID . TYPEASSIGN NUMBER
 
     TYPEASSIGN      shift and go to state 29
@@ -266,11 +260,11 @@ state 23
 
 state 24
 
-    (2) blockchain -> ADD ID SEPARATOR LPARENTH new_atts . RPARENTH
+    (2) blockchain -> ADD ID ASSIGN LPARENTH new_atts . RPARENTH
     (21) new_atts -> new_atts . SEPARATOR new_att
 
-    RPARENTH        shift and go to state 31
-    SEPARATOR       shift and go to state 30
+    RPARENTH        shift and go to state 30
+    SEPARATOR       shift and go to state 31
 
 
 state 25
@@ -304,9 +298,9 @@ state 26
 
 state 27
 
-    (1) blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET .
+    (1) blockchain -> BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH .
 
-    $end            reduce using rule 1 (blockchain -> BLOCKCHAIN ID ASSIGN LBRACKET attributes RBRACKET .)
+    $end            reduce using rule 1 (blockchain -> BLOCKCHAIN ID ASSIGN LPARENTH attributes RPARENTH .)
 
 
 state 28
@@ -320,35 +314,35 @@ state 28
 
 state 29
 
-    (18) new_att -> ID TYPEASSIGN . STR
+    (18) new_att -> ID TYPEASSIGN . STRING
     (19) new_att -> ID TYPEASSIGN . NUMBER
 
-    STR             shift and go to state 41
+    STRING          shift and go to state 41
     NUMBER          shift and go to state 42
 
 
 state 30
 
+    (2) blockchain -> ADD ID ASSIGN LPARENTH new_atts RPARENTH .
+
+    $end            reduce using rule 2 (blockchain -> ADD ID ASSIGN LPARENTH new_atts RPARENTH .)
+
+
+state 31
+
     (21) new_atts -> new_atts SEPARATOR . new_att
-    (18) new_att -> . ID TYPEASSIGN STR
+    (18) new_att -> . ID TYPEASSIGN STRING
     (19) new_att -> . ID TYPEASSIGN NUMBER
 
     ID              shift and go to state 23
 
     new_att                        shift and go to state 43
 
-state 31
-
-    (2) blockchain -> ADD ID SEPARATOR LPARENTH new_atts RPARENTH .
-
-    $end            reduce using rule 2 (blockchain -> ADD ID SEPARATOR LPARENTH new_atts RPARENTH .)
-
-
 state 32
 
     (15) attribute -> ID TYPEASSIGN type .
 
-    RBRACKET        reduce using rule 15 (attribute -> ID TYPEASSIGN type .)
+    RPARENTH        reduce using rule 15 (attribute -> ID TYPEASSIGN type .)
     SEPARATOR       reduce using rule 15 (attribute -> ID TYPEASSIGN type .)
 
 
@@ -356,7 +350,7 @@ state 33
 
     (8) type -> STR .
 
-    RBRACKET        reduce using rule 8 (type -> STR .)
+    RPARENTH        reduce using rule 8 (type -> STR .)
     SEPARATOR       reduce using rule 8 (type -> STR .)
 
 
@@ -364,7 +358,7 @@ state 34
 
     (9) type -> INT .
 
-    RBRACKET        reduce using rule 9 (type -> INT .)
+    RPARENTH        reduce using rule 9 (type -> INT .)
     SEPARATOR       reduce using rule 9 (type -> INT .)
 
 
@@ -372,7 +366,7 @@ state 35
 
     (10) type -> LONG .
 
-    RBRACKET        reduce using rule 10 (type -> LONG .)
+    RPARENTH        reduce using rule 10 (type -> LONG .)
     SEPARATOR       reduce using rule 10 (type -> LONG .)
 
 
@@ -380,7 +374,7 @@ state 36
 
     (11) type -> FLOAT .
 
-    RBRACKET        reduce using rule 11 (type -> FLOAT .)
+    RPARENTH        reduce using rule 11 (type -> FLOAT .)
     SEPARATOR       reduce using rule 11 (type -> FLOAT .)
 
 
@@ -388,7 +382,7 @@ state 37
 
     (12) type -> LIST .
 
-    RBRACKET        reduce using rule 12 (type -> LIST .)
+    RPARENTH        reduce using rule 12 (type -> LIST .)
     SEPARATOR       reduce using rule 12 (type -> LIST .)
 
 
@@ -396,7 +390,7 @@ state 38
 
     (13) type -> TUPLE .
 
-    RBRACKET        reduce using rule 13 (type -> TUPLE .)
+    RPARENTH        reduce using rule 13 (type -> TUPLE .)
     SEPARATOR       reduce using rule 13 (type -> TUPLE .)
 
 
@@ -404,7 +398,7 @@ state 39
 
     (14) type -> DICT .
 
-    RBRACKET        reduce using rule 14 (type -> DICT .)
+    RPARENTH        reduce using rule 14 (type -> DICT .)
     SEPARATOR       reduce using rule 14 (type -> DICT .)
 
 
@@ -412,16 +406,16 @@ state 40
 
     (17) attributes -> attributes SEPARATOR attribute .
 
-    RBRACKET        reduce using rule 17 (attributes -> attributes SEPARATOR attribute .)
+    RPARENTH        reduce using rule 17 (attributes -> attributes SEPARATOR attribute .)
     SEPARATOR       reduce using rule 17 (attributes -> attributes SEPARATOR attribute .)
 
 
 state 41
 
-    (18) new_att -> ID TYPEASSIGN STR .
+    (18) new_att -> ID TYPEASSIGN STRING .
 
-    RPARENTH        reduce using rule 18 (new_att -> ID TYPEASSIGN STR .)
-    SEPARATOR       reduce using rule 18 (new_att -> ID TYPEASSIGN STR .)
+    RPARENTH        reduce using rule 18 (new_att -> ID TYPEASSIGN STRING .)
+    SEPARATOR       reduce using rule 18 (new_att -> ID TYPEASSIGN STRING .)
 
 
 state 42
