@@ -32,7 +32,7 @@ Oh you wanted a file? You didn't want to see it in the console? Good thing this 
 
 `export MyBlock`
 
-A neat json file has been created in your project directory. Huh. Endless possibilities right? Share that blockchain, print the blockchain and hang it on the wall. I don't know it's your file. Do whatever you want with it.
+A neat json file has been created in your project directory. Huh. Endless possibilities right? Share that blockchain, print the blockchain and hang it on the wall. I don't care, it's your file. Do whatever you want with it.
 
 A very important aspect of the blockchain is missing, decentralization right? Well, Brick kind of has it.
 
