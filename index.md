@@ -1,6 +1,11 @@
 ## Brick
 
-**BRICK INTRODUCTION GOES HERE**
+Brick is a programming language able to create blockchains to store data. We create the structure, you determine its application. In Brick, it will be possible to create blockchains, add blocks, mining, and running a node. 
+
+A blockchain is a chain of blocks that contains information. The most important part of the blockchain is that it cannot be backdated or tempered. They have an interesting property, once a data is recorded inside a blockchain is really difficult to change it. Each block contains some data, the hash of the block and the hash of the previous block. Hash are very useful when you want to detach changes to blocks. Blockchains have 3 properties that make them really secure: proof of work (delay to make a change and add a new block), the structure where every block have a reference to the previous block, and that are connected to a P2P network to make them distributed and to verify the blockchain.
+
+Blockchains are becoming very popular lately because of Bitcoin. Cryptocurrency is only a small application of blockchains. In the future blockchains that manage and verify online data can enable us to run companies that are entirely run by algorithms, making self drive cars safer and securing our online identity. The blockchains applications are countless and if we make blockchains more accessible, more people and companies will start using it. 
+
 
 ### Documentation
 
