@@ -59,7 +59,7 @@ This is a preview of what is to come. Brick should in the future, permit users t
 
 ### Video
 
-If that nifty guide wasn't clear enough, [here][https://www.youtube.com/watch?v=hQ2JYAa1zTY&feature=youtu.be] is a video showing you how to install and use Brick.
+If that nifty guide wasn't clear enough, [here](https://www.youtube.com/watch?v=hQ2JYAa1zTY&feature=youtu.be) is a video showing you how to install and use Brick.
 
 
 
