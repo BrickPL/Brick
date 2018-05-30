@@ -45,13 +45,13 @@ A very important aspect of the blockchain is missing, decentralization right? We
 
 With this command, your blockchain is now hosted in your computer for your local network. People on your network can use your address to see the current blockchain:
 
-http://192.168.1.1/ - Gives the current blockchain
+http://0.0.0.0/ - Gives the current blockchain
 
-http://192.168.1.1/current - Gives the data that is waiting for a block to be mined
+http://0.0.0.0/current - Gives the data that is waiting for a block to be mined
 
-http://192.168.1.1/mine - Mines a block in the blockchain
+http://0.0.0.0/mine - Mines a block in the blockchain
 
-http://192.168.1.1/data/new - Using Postman, send a json block with the required info for the blockchain to be added to the list
+http://0.0.0.0/data/new - Using Postman, send a json block with the required info for the blockchain to be added to the list
 
 This is a preview of what is to come. Brick should in the future, permit users to connect peer-to-peer and mantain a proper blockchain. The groundwork is there. 
 
