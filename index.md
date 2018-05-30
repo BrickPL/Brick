@@ -63,6 +63,4 @@ If that nifty guide wasn't clear enough, here is a video showing you how to inst
 
 https://www.youtube.com/watch?v=hQ2JYAa1zTY&feature=youtu.be
 
-### Support or Contact
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
